@@ -195,7 +195,7 @@ class TinyLlavaForConditionalGeneration(TinyLlavaPreTrainedModel):
         kwargs = {}
         kwargs['vision_feature_layer'] = self.config.vision_feature_layer
         kwargs['vision_feature_select_strategy'] = self.config.vision_feature_select_strategy
-        images = images.to(device=self.device, dtype=self.dtype)
+        images = images.to(device=self.device, dtype=torch.float16)
         image_features = self.vision_tower(images, **kwargs)
         image_features = self.connector(image_features)
         return image_features
