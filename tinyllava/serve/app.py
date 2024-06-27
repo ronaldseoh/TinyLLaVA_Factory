@@ -332,6 +332,7 @@ def parse_args():
     parser.add_argument("--model-name", type=str, default=DEFAULT_MODEL_PATH.split('/')[-1])
     parser.add_argument("--load-8bit", action="store_true")
     parser.add_argument("--load-4bit", action="store_true")
+    parser.add_argument("--cache-dir", type=str, default=None)
     args = parser.parse_args()
     return args
 
@@ -348,7 +349,8 @@ if __name__ == "__main__":
     model, tokenizer, image_processor, context_len = load_pretrained_model(
         args.model_path,
         load_4bit=args.load_4bit,
-        load_8bit=args.load_8bit
+        load_8bit=args.load_8bit,
+        cache_dir=args.cache_dir,
     )
     model.to(args.device)
     image_processor = ImagePreprocess(image_processor, model.config)
