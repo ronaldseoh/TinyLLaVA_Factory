@@ -350,9 +350,10 @@ if __name__ == "__main__":
         args.model_path,
         load_4bit=args.load_4bit,
         load_8bit=args.load_8bit,
+        device_map=args.device,
         cache_dir=args.cache_dir,
     )
-    model.to(args.device)
+
     image_processor = ImagePreprocess(image_processor, model.config)
     text_processor = TextPreprocess(tokenizer, args.conv_mode)
     demo = build_demo()
