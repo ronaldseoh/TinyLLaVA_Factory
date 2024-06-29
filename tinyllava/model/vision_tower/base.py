@@ -35,7 +35,7 @@ class VisionTower(nn.Module):
             self._vision_tower = self._vision_tower.from_pretrained(vision_tower_name, **kwargs)      
         else: # nn.Module
             if pretrained_vision_tower_path is not None:
-                vision_tower_weights = torch.load(os.path.join(pretrained_vision_tower_path, 'pytorch_model.bin'), map_location='cpu')
+                vision_tower_weights = torch.load(os.path.join(pretrained_vision_tower_path, 'pytorch_model.bin'))
                 def get_w(weights, keyword):
                     return {k.split(keyword + '.')[1]: v for k, v in weights.items() if keyword in k}
                 self._vision_tower.load_state_dict(vision_tower_weights)
