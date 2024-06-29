@@ -9,6 +9,7 @@ class SIGLIPVisionTower(VisionTower):
     def __init__(self, cfg):
         super().__init__(cfg)
         self._vision_tower = SiglipVisionModel(cfg)
+        self._vision_tower._no_split_modules = [] 
         self._image_processor = SiglipImageProcessor.from_pretrained(cfg.model_name_or_path)
         
         
