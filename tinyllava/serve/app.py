@@ -357,5 +357,5 @@ if __name__ == "__main__":
     image_processor = ImagePreprocess(image_processor, model.config)
     text_processor = TextPreprocess(tokenizer, args.conv_mode)
     demo = build_demo()
-    demo.queue()
+    demo.queue(api_open=False)
     demo.launch(server_name=args.host, server_port=args.port, share=args.share)
