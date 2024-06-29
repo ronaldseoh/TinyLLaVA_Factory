@@ -96,7 +96,7 @@ def get_response(params):
             # image = [load_image_from_base64(img) for img in images][0]
             image = images[0][0]
             image = image_processor(image)
-            image = image.unsqueeze(0)
+            image = image.unsqueeze(0).to(model.device, dtype=torch.float16)
             num_image_tokens = getattr(model.vision_tower._vision_tower, "num_patches", 336)
         else:
             image = None
