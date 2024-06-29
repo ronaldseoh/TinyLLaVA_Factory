@@ -17,13 +17,11 @@ def load_base_ckp_for_lora(ckp_path):
 
 def load_pretrained_model(model_name_or_path, load_type='hf', load_8bit=False, load_4bit=False, device_map="auto",
                           device="cuda", **kwargs):
-    kwargs = {"device_map": device_map, **kwargs}
-    if device != "cuda":
-        kwargs['device_map'] = {"": device}
-
     if load_8bit:
         kwargs['load_in_8bit'] = True
     elif load_4bit:
+        kwargs = {"device_map": "auto"}
+        kwargs['load_in_4bit'] = True
         kwargs['quantization_config'] = BitsAndBytesConfig(
             load_in_4bit=True,
             bnb_4bit_compute_dtype=torch.float16,
@@ -31,9 +29,13 @@ def load_pretrained_model(model_name_or_path, load_type='hf', load_8bit=False, l
             bnb_4bit_quant_type='nf4'
         )
     else:
+        if device != "cuda":
+            kwargs['device_map'] = {"": device}
+        kwargs = {"device_map": device_map, **kwargs}
         kwargs['torch_dtype'] = torch.float16
+
     if model_name_or_path is not None and 'lora' not in model_name_or_path:
-        model = TinyLlavaForConditionalGeneration.from_pretrained(model_name_or_path,low_cpu_mem_usage=True, **kwargs)
+        model = TinyLlavaForConditionalGeneration.from_pretrained(model_name_or_path,low_cpu_mem_usage=True, torch_dtype=torch.float16, **kwargs)
         
     elif model_name_or_path is not None and 'lora' in model_name_or_path:
         if os.path.exists(os.path.join(model_name_or_path, 'adapter_config.json')):
